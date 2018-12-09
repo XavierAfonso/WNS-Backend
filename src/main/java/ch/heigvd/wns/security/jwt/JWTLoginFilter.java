@@ -31,10 +31,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             throws AuthenticationException, IOException, ServletException {
         AccountCredentials credentials = new ObjectMapper().readValue(httpServletRequest.getInputStream(),AccountCredentials.class);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
-        System.out.println(token);
         System.out.println("Username: " + credentials.getUsername());
         System.out.println("Password: " + credentials.getPassword());
-        return getAuthenticationManager().authenticate(token);
+        Authentication authentication = getAuthenticationManager().authenticate(token);
+        System.out.println(authentication);
+        return authentication;
     }
 
     @Override

@@ -3,8 +3,7 @@ package ch.heigvd.wns.security;
 
 import ch.heigvd.wns.security.jwt.JWTAuthenticationFilter;
 import ch.heigvd.wns.security.jwt.JWTLoginFilter;
-import ch.heigvd.wns.security.jwt.WNSUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import ch.heigvd.wns.security.jwt.UserDetailsServiceImp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,8 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -25,11 +22,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private WNSUserDetailsService userDetailsService;
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImp();
+    };
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,10 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        // Create a default account
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
 
-        /*auth.inMemoryAuthentication()
+        // Create a default account
+        //auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+       /* auth.inMemoryAuthentication()
                 .withUser("admin")
                 .password("password")
                 .roles("ADMIN");*/

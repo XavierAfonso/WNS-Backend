@@ -2,12 +2,6 @@ package ch.heigvd.wns.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Document(indexName = "wns", type = "users")
 public class User {
@@ -16,18 +10,43 @@ public class User {
     private Long id;
     private String firstname;
     private String lastname;
+    private String username;
     private String email;
     private String password;
+    private String[] roles;
 
-    private List<String> roles = new ArrayList<>();
+    public User() {
 
+    }
 
-    public List<String> getRoles() {
+    public User(String username, String password, String... roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String[] getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(String[] roles) {
         this.roles = roles;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstname() {
@@ -54,44 +73,14 @@ public class User {
         this.email = email;
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public String getUsername() {
-        return null;
-    }
-
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    public boolean isEnabled() {
-        return false;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 }
