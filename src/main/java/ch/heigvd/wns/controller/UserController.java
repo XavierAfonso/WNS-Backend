@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -28,5 +30,12 @@ public class UserController {
         user.setRoles(new String[] {"USER"});
         userRepository.save(user);
         return ResponseEntity.ok(user);
+    }
+
+    @RequestMapping(method = { RequestMethod.GET }, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<List<User>> list() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
 }
