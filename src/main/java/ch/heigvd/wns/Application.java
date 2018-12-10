@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Application {
 
-    @RequestMapping("/")
-    String hello() {
-        return "hello world";
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

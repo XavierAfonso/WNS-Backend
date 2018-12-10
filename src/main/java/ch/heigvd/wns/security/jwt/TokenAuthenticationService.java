@@ -1,5 +1,6 @@
 package ch.heigvd.wns.security.jwt;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,13 @@ public class TokenAuthenticationService {
                     .signWith(SignatureAlgorithm.HS512, secret)
                     .compact();
         response.addHeader(headerString,tokenPrefix + " "+ JWT);
+        try {
+            response.getWriter().write("{ \"token\": \"" + JWT + "\"}" );
+            response.getWriter().flush();
+            response.getWriter().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Authentication getAuthentication(HttpServletRequest request)
@@ -33,15 +41,21 @@ public class TokenAuthenticationService {
         if(token != null)
         {
             // parse the token.
-            String username = Jwts.parser()
+            try {
+                String username = Jwts.parser()
                         .setSigningKey(secret)
                         .parseClaimsJws(token)
                         .getBody()
                         .getSubject();
-            if(username != null) // we managed to retrieve a user
-            {
-                return new AuthenticatedUser(username);
+                if(username != null) // we managed to retrieve a user
+                {
+                    return new AuthenticatedUser(username);
+                }
+            } catch (JwtException jwtException) {
+                jwtException.printStackTrace();
+                return null;
             }
+
         }
         return null;
     }

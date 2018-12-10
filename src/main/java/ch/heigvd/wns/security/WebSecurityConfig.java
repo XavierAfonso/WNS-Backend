@@ -40,12 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable() // disable csrf for our requests.
         .authorizeRequests()
         .antMatchers("/").permitAll()
-        .antMatchers(HttpMethod.POST,"/login").permitAll()
+        .antMatchers(HttpMethod.POST,"/users/signin").permitAll()
         .antMatchers(HttpMethod.POST,"/users/signup").permitAll()
         .anyRequest().authenticated()
         .and()
         // We filter the api/login requests
-        .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JWTLoginFilter("/users/signin", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
         // And filter other requests to check the presence of JWT in header
         .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
