@@ -1,5 +1,6 @@
-package ch.heigvd.wns.repository;
+package ch.heigvd.wns.repository.elasticsearch;
 
+import ch.heigvd.wns.model.Book;
 import ch.heigvd.wns.model.User;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
@@ -8,9 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends ElasticsearchRepository<User, String> {
+public interface BookRepository extends ElasticsearchRepository<Book, String> {
 
-    User findByEmail(String email);
-    Optional<User> findById(Long id);
-    List<User> findAll();
 }

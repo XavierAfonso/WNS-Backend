@@ -1,18 +1,26 @@
 package ch.heigvd.wns.model;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(indexName = "wns", type = "users")
+import javax.annotation.Generated;
+import java.util.List;
+
+@Document(collection = "user")
 public class User {
 
     @Id
-    private Long id;
+    private String id;
     private String firstname;
     private String lastname;
     private String username;
     private String email;
     private String password;
+
+    //DBRef
+    //private List<User> friends;
+
     private String[] roles;
 
     public User() {
@@ -41,11 +49,11 @@ public class User {
         this.roles = roles;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

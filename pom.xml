@@ -16,8 +16,11 @@
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
             <version>LATEST</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>LATEST</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

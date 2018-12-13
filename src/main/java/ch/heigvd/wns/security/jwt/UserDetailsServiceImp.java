@@ -1,12 +1,11 @@
 package ch.heigvd.wns.security.jwt;
 
-import ch.heigvd.wns.repository.UserRepository;
+import ch.heigvd.wns.repository.mongo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserDetailsServiceImp implements UserDetailsService {
 
