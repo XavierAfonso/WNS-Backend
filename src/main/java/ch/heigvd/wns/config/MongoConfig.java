@@ -23,7 +23,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
     @Override
     public MongoClient mongoClient() {
         String URI = "";
-        if (dotenv().get("MONGO_URI").isEmpty())
+        if (dotenv().get("MONGO_URI") == null || (dotenv().get("MONGO_URI").isEmpty()))
             URI = "mongodb://" + dotenv().get("MONGO_USER") + ":" +
                 dotenv().get("MONGO_PASS") + "@" + dotenv().get("MONGO_HOST") + ":" + dotenv().get("MONGO_PORT") + "/" + dotenv().get("DB_NAME");
         else

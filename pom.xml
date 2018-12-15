@@ -11,20 +11,20 @@
     <description>Write aNd Share books</description>
 
     <dependencies>
-        <dependency>
-            <!--
+        <!--<dependency>
+
             https://github.com/VanRoy/spring-data-jest
             https://github.com/VanRoy/spring-data-jest/tree/master/spring-boot-sample-data-jest
-             -->
+
             <groupId>com.github.vanroy</groupId>
             <artifactId>spring-boot-starter-data-jest</artifactId>
             <version>3.2.0.RELEASE</version>
-        </dependency>
-        <!--<dependency>
+        </dependency>-->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
             <version>LATEST</version>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
