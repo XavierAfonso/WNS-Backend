@@ -58,3 +58,10 @@ For creating a elasticsearch index, open the dev tool in Kibana then run:
 ```bash
 PUT wns
 ```
+
+### Continuous deployment
+
+We will follow this documentation for configuring our deployment of elasticsearch: https://devcenter.heroku.com/articles/bonsai
+
+- For MongoDB we will store the database in MongoDB Atlas
+- For ElasticSearch 

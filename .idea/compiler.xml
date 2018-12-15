@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="WNS-Backend" target="8" />
+      <module name="WNS-Backend" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
