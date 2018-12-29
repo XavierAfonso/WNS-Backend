@@ -65,3 +65,21 @@ We will follow this documentation for configuring our deployment of elasticsearc
 
 - For MongoDB we will store the database in MongoDB Atlas
 - For ElasticSearch 
+
+
+
+### Database Design
+
+Here are some usefull articles concerning the design of our DB: 
+
+- https://www.mongodb.com/blog/post/tracking-twitter-followers-with-mongodb
+
+A problematic thing is the followers/following relation. Basicaly, we have two choice:
+
+- Normalizating the datas in User collection in order to store an array called followers which contains the reference to the users we follow.
+  The approach is faster than others but is limited to 16MB .. So clearly not scalable. A clear advantage of this approach is that all follower/following information for a user can be found by reading a single document.
+- The second approach is to have two collection in addition to the User collection. The collection ``followers`` and ``following``
+  which contains two refenrece to ``follower`` and the ``followed``. We inspired from this approach described here: https://github.com/mongodb-labs/socialite/blob/master/docs/graph.md
+
+In the followers table we have added a Compound Unique Index on both from and to fields. In order to ensure a quick retrieve
+but also that we have only one record with the same from and same to.

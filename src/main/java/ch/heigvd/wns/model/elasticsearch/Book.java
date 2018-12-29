@@ -1,4 +1,4 @@
-package ch.heigvd.wns.model;
+package ch.heigvd.wns.model.elasticsearch;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;

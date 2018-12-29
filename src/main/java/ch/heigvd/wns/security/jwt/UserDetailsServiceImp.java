@@ -17,7 +17,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     /*Here we are using dummy data, you need to load user data from
      database or other third party application*/
-        ch.heigvd.wns.model.User user = userRepository.findByEmail(username);
+        ch.heigvd.wns.model.mongo.User user = userRepository.findByEmail(username);
 
         User.UserBuilder builder = null;
         if (user != null) {

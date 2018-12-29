@@ -1,25 +1,20 @@
-package ch.heigvd.wns.model;
+package ch.heigvd.wns.model.mongo;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.annotation.Generated;
 import java.util.List;
 
 @Document(collection = "user")
 public class User {
 
     @Id
-    private String id;
+    private String email;
     private String firstname;
     private String lastname;
     private String username;
-    private String email;
     private String password;
-
-    //DBRef
-    //private List<User> friends;
 
     private String[] roles;
 
@@ -47,14 +42,6 @@ public class User {
 
     public void setRoles(String[] roles) {
         this.roles = roles;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFirstname() {
@@ -88,7 +75,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 
 }
