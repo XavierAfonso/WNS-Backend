@@ -21,14 +21,76 @@ public class Notification {
     @Id
     private String id;
 
+    // Can be a page, a persone or others things
     @DBRef
     private User sender;
 
     @DBRef
     private User recipient;
 
+    private String content = "";
+
+    private String type = "";
+
+    private Boolean isRead = false;
+
+    public Notification() {
+
+    }
+
+    public Notification(User sender, User recipient, String content, String type) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.content = content;
+        this.type = type;
+    }
 
 
-    private String content;
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Boolean getRead() {
+        return isRead;
+    }
+
+    public void setRead(Boolean read) {
+        isRead = read;
+    }
 }

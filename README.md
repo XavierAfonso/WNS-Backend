@@ -83,3 +83,8 @@ A problematic thing is the followers/following relation. Basicaly, we have two c
 
 In the followers table we have added a Compound Unique Index on both from and to fields. In order to ensure a quick retrieve
 but also that we have only one record with the same from and same to.
+
+
+### ElasticSearch
+
+Plugin for PDF https://qbox.io/blog/powerful-pdf-search-elasticsearch-mapper-attachment

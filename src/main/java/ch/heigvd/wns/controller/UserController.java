@@ -54,22 +54,24 @@ public class UserController {
     }
 
     // Followers section
-    @RequestMapping(value = "{id}/followers/{page_number}", method = { RequestMethod.GET }, produces = "application/json")
+    // Finish pagination
+    @RequestMapping(value = "{id}/followers", method = { RequestMethod.GET }, produces = "application/json")
     public @ResponseBody
-    List<User> followers(@PathVariable String id, @PathVariable Optional<Integer> page_number) {
+    List<User> followers(@PathVariable String id, @PathVariable("page_number") Optional<Integer> page_number) {
         Optional<User> u = userRepository.findById(id);
         if (!u.isPresent()) {
             return null;
         }
         User user = u.get();
-        List<Followers> followers = followerRepository.findByFrom(user, PageRequest.of(page_number.get() == null ? 1 : page_number.get(), 50));
+
+        List<Followers> followers = followerRepository.findByFrom(user, PageRequest.of(page_number.isPresent() ? page_number.get() : 0, 50));
         List<User> users = followers.stream().map(_f -> _f.getTo()).collect(Collectors.toList());
         return users;
     }
 
-    @RequestMapping(value = "{id}/followings/{page_number}", method = { RequestMethod.GET }, produces = "application/json")
+    @RequestMapping(value = "{id}/followings", method = { RequestMethod.GET }, produces = "application/json")
     public @ResponseBody
-    List<User> followings(@PathVariable String id, @PathVariable Optional<Integer> page_number) {
+    List<User> followings(@PathVariable String id, @PathVariable("page_number") Optional<Integer> page_number) {
         Optional<User> u = userRepository.findById(id);
         if (!u.isPresent()) {
             return null;
@@ -98,7 +100,7 @@ public class UserController {
             return ResponseEntity.badRequest().body("Already exists");
         }
 
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("Correctly followed");
     }
 
     @RequestMapping(value = "unfollow", method = { RequestMethod.POST }, produces = "application/json")
@@ -113,7 +115,7 @@ public class UserController {
 
         Followers followers = followerRepository.findByFromAndTo(follower, followed);
         followerRepository.delete(followers);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("Correctly unfollowed.");
     }
 
     @RequestMapping(method = { RequestMethod.GET }, produces = "application/json")
