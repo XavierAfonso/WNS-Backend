@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface PostRepository extends PagingAndSortingRepository<Post, Serializable> {
-    List<Post> findByCreatedByDesc(User user);
+    List<Post> findByCreatedByOrderByCreatedDateDesc(User user);
     List<Post> findByBookId(String bookId);
 
     List<Post> findAll();

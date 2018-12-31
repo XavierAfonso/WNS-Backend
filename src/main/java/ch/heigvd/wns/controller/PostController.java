@@ -60,7 +60,7 @@ public class PostController {
         if (user == null) {
             return null;
         }
-        return postRepository.findByCreatedByDesc(user);
+        return postRepository.findByCreatedByOrderByCreatedDateDesc(user);
     }
 
     @RequestMapping(value = "wall/{id_user}", method = { RequestMethod.GET }, produces = "application/json")
