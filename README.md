@@ -51,7 +51,7 @@ db.createUser( { user: "wns",
 
 #### Elasticsearch
 
-Install and launch elasticsearch. Install also Kibana for visualizing data and using the dev tools for communicating easily with the REST Api.
+Install and launch elasticsearch. Install also Kibana for visualizing bookContent and using the dev tools for communicating easily with the REST Api.
 
 For creating a elasticsearch index, open the dev tool in Kibana then run:
 
@@ -84,7 +84,59 @@ A problematic thing is the followers/following relation. Basicaly, we have two c
 In the followers table we have added a Compound Unique Index on both from and to fields. In order to ensure a quick retrieve
 but also that we have only one record with the same from and same to.
 
+For notification we used a compound index:
 
 ### ElasticSearch
 
 Plugin for PDF https://qbox.io/blog/powerful-pdf-search-elasticsearch-mapper-attachment
+
+It's not easy to manage file through an API which persist it to elasticsearch. However here is a working example with an old plugin
+mapper-attachment replaced now by ingest-attachment: https://qbox.io/blog/index-attachments-files-elasticsearch-mapper
+
+Warning:
+
+```
+Extracting contents from binary bookContent is a resource intensive operation and consumes a lot of resources. It is highly recommended to run pipelines using this processor in a dedicated ingest node.
+```
+
+A pipeline is a definition of a series of processors that are to be executed in the same order as they are declared. A pipeline consists of two main fields: a postDescription and a list of processors:
+The postDescription is a special field to store a helpful postDescription of what the pipeline does.
+The processors parameter defines a list of processors to be executed in order.
+
+For using the pipeline we need to create it:
+
+```java
+PUT _ingest/pipeline/attachment
+{
+  "postDescription" : "Extract attachment information",
+  "processors" : [
+    {
+      "attachment" : {
+        "field" : "bookContent"
+      }
+    }
+  ]
+}
+```
+
+Then every PUT request for indexing a document should look like this:
+
+```java
+PUT wns/books/SYM_AB-SalleTE?pipeline=attachment
+{
+    "bookContent": "base64 bookContent"
+}
+```
+
+Then for searching a term in document:
+
+```java
+GET wns/books/_search 
+{
+  "query": {
+    "match": {
+      "attachment.content": "Mentor"
+    }
+  }
+}
+```
