@@ -140,3 +140,6 @@ GET wns/books/_search
   }
 }
 ```
+
+fuzzy query
+Find documents where the field specified contains terms which are fuzzily similar to the specified term. Fuzziness is measured as a Levenshtein edit distance of 1 or 2.

@@ -37,9 +37,10 @@ public class TokenAuthenticationService {
 
     public Authentication getAuthentication(HttpServletRequest request)
     {
-        System.out.println(request.getHeader(headerString));
+        String token = request.getHeader(headerString);
+        if (token.contains("Bearer"))
+            token = token.replace("Bearer ", "");
 
-        String token = request.getHeader(headerString).replace("Bearer ", "");
         if(token != null)
         {
             // parse the token.
