@@ -1,7 +1,9 @@
 package ch.heigvd.wns.controller;
 
+import ch.heigvd.wns.model.elasticsearch.Book;
 import ch.heigvd.wns.model.mongo.Followers;
 import ch.heigvd.wns.model.mongo.User;
+import ch.heigvd.wns.repository.elasticsearch.BookRepository;
 import ch.heigvd.wns.repository.mongo.FollowerRepository;
 import ch.heigvd.wns.repository.mongo.UserRepository;
 import ch.heigvd.wns.security.jwt.AccountCredentials;
@@ -9,6 +11,7 @@ import ch.heigvd.wns.security.jwt.AuthenticatedUser;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +30,9 @@ public class UserController {
 
     @Autowired
     private FollowerRepository followerRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -129,5 +135,12 @@ public class UserController {
     ResponseEntity<List<User>> list() {
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
+    }
+
+    @RequestMapping(value = "likes", method = { RequestMethod.GET }, produces = "application/json")
+    public @ResponseBody
+    List<Book> booksLiked(@RequestParam String id_user) {
+        User user = userRepository.findByEmail(id_user);
+        return bookRepository.findByIdIn(user.getLikes());
     }
 }
