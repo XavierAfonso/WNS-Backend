@@ -23,7 +23,7 @@ public class Book {
     private String[] tags;
 
     @JsonIgnore
-    @JsonProperty("data")
+    @JsonProperty("bookContent")
     private String bookContent;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
