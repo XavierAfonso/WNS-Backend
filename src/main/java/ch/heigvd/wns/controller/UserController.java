@@ -5,10 +5,12 @@ import ch.heigvd.wns.model.mongo.User;
 import ch.heigvd.wns.repository.mongo.FollowerRepository;
 import ch.heigvd.wns.repository.mongo.UserRepository;
 import ch.heigvd.wns.security.jwt.AccountCredentials;
+import ch.heigvd.wns.security.jwt.AuthenticatedUser;
 import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,8 +86,10 @@ public class UserController {
 
     @RequestMapping(value = "follow", method = { RequestMethod.POST }, produces = "application/json")
     public @ResponseBody
-    ResponseEntity follow(@RequestParam String from, @RequestParam String to) {
-        User follower = userRepository.findByEmail(from);
+    ResponseEntity follow(@RequestParam String to) {
+        AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
+
+        User follower = userRepository.findByEmail(auth.getName());
         User followed = userRepository.findByEmail(to);
 
         if (followed == null || follower == null) {
@@ -105,8 +109,10 @@ public class UserController {
 
     @RequestMapping(value = "unfollow", method = { RequestMethod.POST }, produces = "application/json")
     public @ResponseBody
-    ResponseEntity unfollow(@RequestParam String from, @RequestParam String to) {
-        User follower = userRepository.findByEmail(from);
+    ResponseEntity unfollow(@RequestParam String to) {
+        AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
+
+        User follower = userRepository.findByEmail(auth.getName());
         User followed = userRepository.findByEmail(to);
 
         if (followed == null || follower == null) {
