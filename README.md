@@ -112,7 +112,7 @@ PUT _ingest/pipeline/attachment
   "processors" : [
     {
       "attachment" : {
-        "field" : "bookContent"
+        "field" : "data"
       }
     }
   ]
