@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 import org.apache.http.HttpHost;
+import org.apache.lucene.analysis.CharArrayMap;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
@@ -30,6 +31,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 @RestController
@@ -154,8 +157,7 @@ public class BookController {
     @RequestMapping(method = { RequestMethod.GET }, produces = "application/json")
     public @ResponseBody
     List<Book> getUserBooks(@RequestParam("id_user") String id) {
-        AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByEmail(auth.getName());
+        User user = userRepository.findByEmail(id);
         if (user == null) {
             return null;
         }
@@ -172,47 +174,39 @@ public class BookController {
     @RequestMapping(value = "search", method = { RequestMethod.GET }, produces = "application/json")
     public @ResponseBody
     List<Book> search(@RequestBody SearchQuery searchQuery) {
-        String key = "";
-        String content = "";
-        Boolean fuzzyQuery = false;
+        System.out.println(searchQuery);
+        Map<String, String> hashmap = new HashMap<>();
 
         if (searchQuery.getBookContent() != null) {
-            key = "attachment.content";
-            content =  searchQuery.getBookContent();
-            fuzzyQuery = true;
-        } else if (searchQuery.getTags() != null) {
-            key = "tags";
-            content =  Arrays.toString(searchQuery.getTags());
-        } else if (searchQuery.getPostDescription() != null) {
-            key = "postDescription";
-            content =  searchQuery.getPostDescription();
-            fuzzyQuery = true;
-        } else if (searchQuery.getTitle() != null) {
-            key = "title";
-            content =  searchQuery.getTitle();
-            fuzzyQuery = true;
-        } else {
-            return null;
+            hashmap.put("attachment.content", searchQuery.getBookContent());
+        }
+        if (searchQuery.getTags() != null) {
+            hashmap.put("tags", Arrays.toString(searchQuery.getTags()));
+        }
+        if (searchQuery.getPostDescription() != null) {
+            hashmap.put("postDescription", searchQuery.getPostDescription());
+        }
+        if (searchQuery.getTitle() != null) {
+            hashmap.put("title", searchQuery.getTitle());
         }
 
-        if (fuzzyQuery) {
-            QueryBuilder qb = fuzzyQuery(
-                    key,
-                    content
-            );
+        if (true) {
+            BoolQueryBuilder query = QueryBuilders.boolQuery();
+            try {
+                System.out.println(hashmap);
+                for (String key : hashmap.keySet()) {
+                    query.must(QueryBuilders.matchQuery(key, hashmap.get(key)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(query);
             NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
-                    .withQuery(qb)
+                    .withQuery(query)
                     .build();
             return elasticsearchTemplate.queryForList(nativeSearchQuery, Book.class);
         } else {
-            QueryBuilder qb = matchQuery(
-                    key,
-                    content
-            ).operator(Operator.AND); // The operator flag can be set to or or and to control the boolean clauses (defaults to or).
-            NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
-                    .withQuery(qb)
-                    .build();
-            return elasticsearchTemplate.queryForList(nativeSearchQuery, Book.class);
+            return null;
         }
     }
 }
