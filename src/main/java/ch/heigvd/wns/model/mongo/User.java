@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "user")
@@ -17,6 +18,8 @@ public class User {
     private String password;
 
     private String[] roles;
+
+    private List<String> likes = new ArrayList<String>();
 
     public User() {
 
@@ -76,4 +79,15 @@ public class User {
         this.password = password;
     }
 
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    public void addLike(String bookId) {
+        this.likes.add(bookId);
+    }
 }

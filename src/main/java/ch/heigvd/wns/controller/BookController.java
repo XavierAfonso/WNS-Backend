@@ -105,7 +105,7 @@ public class BookController {
 
     @RequestMapping(method = { RequestMethod.DELETE }, produces = "application/json")
     public @ResponseBody
-    ResponseEntity<Book> deleteBook(@RequestParam("id_book") String id) {
+    ResponseEntity deleteBook(@RequestParam("id_book") String id) {
         AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(auth.getName());
         if (user == null) {
@@ -233,4 +233,19 @@ public class BookController {
             return null;
         }
     }
+
+    @RequestMapping(value = "like/{book_id}", method = { RequestMethod.POST }, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<Book> likeABook(@PathVariable("book_id") String bookId) {
+        AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            User user = userRepository.findByEmail(auth.getName());
+            user.addLike(bookId);
+            userRepository.save(user);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
 }
