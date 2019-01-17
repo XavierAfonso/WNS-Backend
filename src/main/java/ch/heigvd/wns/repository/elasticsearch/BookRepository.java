@@ -14,5 +14,7 @@ public interface BookRepository extends ElasticsearchRepository<Book, String> {
     List<Book> findAllByAuthorIdOrderByCreatedDateDesc(String authorId);
     List<Book> findAllByTagsLike(String[] tags);
     List<Book> findByIdIn(List<String> ids);
-
+    List<Book> findByAuthorIdInOrderByCreatedDateDesc(List<String> ids);
+    List<Book> findByAuthorIdIn(List<String> ids);
+    Book findByAuthorId(String id);
 }

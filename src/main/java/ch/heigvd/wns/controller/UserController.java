@@ -143,4 +143,18 @@ public class UserController {
         User user = userRepository.findByEmail(id_user);
         return bookRepository.findByIdIn(user.getLikes());
     }
+
+    @RequestMapping(value = "wall/{id_user}", method = { RequestMethod.GET }, produces = "application/json")
+    public @ResponseBody
+    List<Book> wall(@PathVariable("id_user") String id) {
+        // Get one or two latest post of following users
+        List<Followers> followings = followerRepository.findByFrom(userRepository.findByEmail(id));
+        List<String> followingsIds = followings
+                .stream()
+                .map(f -> f.getTo().getEmail())
+                .distinct()
+                .collect(Collectors.toList());
+        List<Book> wall = bookRepository.findByAuthorIdInOrderByCreatedDateDesc(followingsIds);
+        return wall;
+    }
 }

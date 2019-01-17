@@ -3,6 +3,7 @@ package ch.heigvd.wns.controller;
 import ch.heigvd.wns.dto.PostDTO;
 import ch.heigvd.wns.dto.SearchQuery;
 import ch.heigvd.wns.model.elasticsearch.Book;
+import ch.heigvd.wns.model.mongo.Followers;
 import ch.heigvd.wns.model.mongo.User;
 import ch.heigvd.wns.repository.elasticsearch.BookRepository;
 import ch.heigvd.wns.repository.mongo.FollowerRepository;
@@ -34,6 +35,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/books")
@@ -186,13 +188,6 @@ public class BookController {
             return response;
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
-    }
-
-    @RequestMapping(value = "wall/{id_user}", method = { RequestMethod.GET }, produces = "application/json")
-    public @ResponseBody
-    List<Book> wall(@RequestParam("id_user") String id) {
-        // Get one or two latest post of following users
-        return null;
     }
 
     @RequestMapping(value = "search", method = { RequestMethod.GET }, produces = "application/json")
