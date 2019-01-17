@@ -103,6 +103,40 @@ public class BookController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @RequestMapping(method = { RequestMethod.DELETE }, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<Book> deleteBook(@RequestParam("id_book") String id) {
+        AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Optional<Book> book = bookRepository.findById(id);
+        if (book.isPresent()) {
+            Book _book = book.get();
+            bookRepository.delete(_book);
+            File pdfFile = new File(APP_PDF_FOLDER + _book.getTitle());
+
+            if (pdfFile.exists()) {
+                pdfFile.delete();
+                // If you require it to make the entire directory path including parents,
+                // use directory.mkdirs(); here instead.
+            }
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(method = { RequestMethod.GET }, produces = "application/json")
+    public @ResponseBody
+    List<Book> getUserBooks(@RequestParam("id_user") String id) {
+        User user = userRepository.findByEmail(id);
+        if (user == null) {
+            return null;
+        }
+        return bookRepository.findAllByAuthorIdOrderByCreatedDateDesc(user.getEmail());
+    }
+
     @RequestMapping(value = "{book_id}", method = { RequestMethod.GET }, produces = "application/json")
     public @ResponseBody
     Book getBook(@PathVariable("book_id") String bookId) {
@@ -151,17 +185,7 @@ public class BookController {
                     new InputStreamResource(stream), headers, HttpStatus.OK);
             return response;
         }
-        return null;
-    }
-
-    @RequestMapping(method = { RequestMethod.GET }, produces = "application/json")
-    public @ResponseBody
-    List<Book> getUserBooks(@RequestParam("id_user") String id) {
-        User user = userRepository.findByEmail(id);
-        if (user == null) {
-            return null;
-        }
-        return bookRepository.findAllByAuthorIdOrderByCreatedDateDesc(user.getEmail());
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "wall/{id_user}", method = { RequestMethod.GET }, produces = "application/json")

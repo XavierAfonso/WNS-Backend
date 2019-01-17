@@ -108,11 +108,11 @@ For using the pipeline we need to create it:
 ```java
 PUT _ingest/pipeline/attachment
 {
-  "postDescription" : "Extract attachment information",
+  "description" : "Extract attachment information",
   "processors" : [
     {
       "attachment" : {
-        "field" : "data"
+        "field" : "bookContent"
       }
     }
   ]
