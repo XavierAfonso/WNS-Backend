@@ -72,8 +72,8 @@ public class UserController {
         }
         User user = u.get();
 
-        List<Followers> followers = followerRepository.findByFrom(user, PageRequest.of(page_number.isPresent() ? page_number.get() : 0, 50));
-        List<User> users = followers.stream().map(_f -> _f.getTo()).collect(Collectors.toList());
+        List<Followers> followers = followerRepository.findByTo(user, PageRequest.of(page_number.isPresent() ? page_number.get() : 0, 50));
+        List<User> users = followers.stream().map(_f -> _f.getFrom()).distinct().collect(Collectors.toList());
         return users;
     }
 
@@ -85,8 +85,8 @@ public class UserController {
             return null;
         }
         User user = u.get();
-        List<Followers> followers = followerRepository.findByTo(user, PageRequest.of(page_number.get() == null ? 1 : page_number.get(), 50));
-        List<User> users = followers.stream().map(_f -> _f.getTo()).collect(Collectors.toList());
+        List<Followers> followers = followerRepository.findByFrom(user, PageRequest.of(page_number.get() == null ? 1 : page_number.get(), 50));
+        List<User> users = followers.stream().map(_f -> _f.getTo()).distinct().collect(Collectors.toList());
         return users;
     }
 
