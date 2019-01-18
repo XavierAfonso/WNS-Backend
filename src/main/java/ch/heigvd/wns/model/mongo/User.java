@@ -88,8 +88,12 @@ public class User {
     }
 
     public void addLike(String bookId) {
-        this.likes.add(bookId);
+        if (!likes.contains(bookId))
+            this.likes.add(bookId);
     }
 
-    public void removeLike(String bookId) { this.likes.remove(bookId); }
+    public void removeLike(String bookId) {
+        if (this.likes.contains(bookId))
+            this.likes.remove(bookId);
+    }
 }
