@@ -194,22 +194,27 @@ public class BookController {
     public @ResponseBody
     List<Book> search(@RequestBody SearchQuery searchQuery) {
         System.out.println(searchQuery);
+        Boolean isSearchable = false;
         Map<String, String> hashmap = new HashMap<>();
 
         if (searchQuery.getBookContent() != null) {
             hashmap.put("attachment.content", searchQuery.getBookContent());
+            isSearchable = true;
         }
         if (searchQuery.getTags() != null) {
             hashmap.put("tags", Arrays.toString(searchQuery.getTags()));
+            isSearchable = true;
         }
         if (searchQuery.getPostDescription() != null) {
             hashmap.put("postDescription", searchQuery.getPostDescription());
+            isSearchable = true;
         }
         if (searchQuery.getTitle() != null) {
             hashmap.put("title", searchQuery.getTitle());
+            isSearchable = true;
         }
 
-        if (true) {
+        if (isSearchable) {
             BoolQueryBuilder query = QueryBuilders.boolQuery();
             try {
                 System.out.println(hashmap);

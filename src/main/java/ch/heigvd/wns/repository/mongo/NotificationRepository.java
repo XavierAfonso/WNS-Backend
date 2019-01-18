@@ -12,6 +12,5 @@ import java.util.List;
 public interface NotificationRepository extends PagingAndSortingRepository<Notification, Serializable> {
     List<Notification> findByRecipient(User recipient);
     List<Notification> findBySender(User user);
-
     List<Notification> findAll();
 }
