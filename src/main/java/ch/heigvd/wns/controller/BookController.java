@@ -248,4 +248,18 @@ public class BookController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping(value = "unlike/{book_id}", method = { RequestMethod.POST }, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<Book> unLikeABook(@PathVariable("book_id") String bookId) {
+        AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if (optionalBook.isPresent()) {
+            User user = userRepository.findByEmail(auth.getName());
+            user.removeLike(bookId);
+            userRepository.save(user);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
 }

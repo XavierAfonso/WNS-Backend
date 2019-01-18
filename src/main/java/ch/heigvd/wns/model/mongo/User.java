@@ -90,4 +90,6 @@ public class User {
     public void addLike(String bookId) {
         this.likes.add(bookId);
     }
+
+    public void removeLike(String bookId) { this.likes.remove(bookId); }
 }
