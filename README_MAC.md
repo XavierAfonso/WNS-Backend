@@ -15,7 +15,7 @@ Par conséquent, suite à la discussion avec Miguel et Nastaran, nous avons déc
 
 Notre base de données MongoDB manipulent les collections suivantes:
 
-![image-20190118010340005](/Users/MentorReka/Documents/Professionnel/HEIG-VD/Modules/S5/PROJETTWEBMAC/MONGODB_MODEL.png)
+![image-20190118010340005](MONGODB_MODEL.png)
 
 Nous sommes partis sur un schéma de base de données simple et épurée tout en faisant des compromis. L'ensemble des informations sont accessibles en maximum deux lectures et celà sans sacrifier l'évolutivité du schéma.
 
@@ -157,7 +157,7 @@ Comme décrit ultérieurement, les auteurs vont fournir des PDFs. Pour ce faire,
 
 Après divers recherches, nous sommes tombés sur le plugin **mapper-attachment** qui aujourd'hui est devenu **ingest-attachment**. Le processus pour indexer un PDF est le suivant:
 
-![image-20190118010340005](/Users/MentorReka/Documents/Professionnel/HEIG-VD/Modules/S5/PROJETTWEBMAC/pdf-to-elasticsearch.png)
+![image-20190118010340005](pdf-to-elasticsearch.png)
 
 Image source: https://qbox.io/
 
