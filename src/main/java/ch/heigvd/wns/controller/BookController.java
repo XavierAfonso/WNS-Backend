@@ -190,7 +190,7 @@ public class BookController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "search", method = { RequestMethod.GET }, produces = "application/json")
+    @RequestMapping(value = "search", method = { RequestMethod.POST }, produces = "application/json")
     public @ResponseBody
     List<Book> search(@RequestBody SearchQuery searchQuery) {
         System.out.println(searchQuery);
