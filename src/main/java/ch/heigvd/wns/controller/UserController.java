@@ -46,6 +46,9 @@ public class UserController {
         User user = new User();
         user.setEmail(creds.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(creds.getPassword()));
+        user.setFirstname(creds.getFirstname());
+        user.setLastname(creds.getLastname());
+        user.setUsername(creds.getRealUsername());
         user.setRoles(new String[] {"USER"});
         userRepository.save(user);
         return ResponseEntity.ok(user);
