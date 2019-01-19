@@ -113,7 +113,7 @@ public class BookController {
         if (user == null) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Optional<Book> book = bookRepository.findById(id);
+        Optional<Book> book = bookRepository.findByIdAndAuthorId(id, auth.getName());
         if (book.isPresent()) {
             Book _book = book.get();
             bookRepository.delete(_book);

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookRepository extends ElasticsearchRepository<Book, String> {
@@ -16,5 +17,6 @@ public interface BookRepository extends ElasticsearchRepository<Book, String> {
     List<Book> findByIdIn(List<String> ids);
     List<Book> findByAuthorIdInOrderByCreatedDateDesc(List<String> ids);
     List<Book> findByAuthorIdIn(List<String> ids);
+    Optional<Book> findByIdAndAuthorId(String id, String authorId);
     Book findByAuthorId(String id);
 }
