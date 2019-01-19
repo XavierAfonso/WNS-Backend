@@ -54,6 +54,17 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @RequestMapping(value = "me", method = { RequestMethod.GET }, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity<User> me() {
+        AuthenticatedUser auth = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByEmail(auth.getName());
+        if (user == null) {
+            return ResponseEntity.status(400).body(null);
+        }
+        return ResponseEntity.ok(user);
+    }
+
     @RequestMapping(value = "{id_user}", method = { RequestMethod.GET }, produces = "application/json")
     public @ResponseBody
     ResponseEntity<User> getSingleUser(@PathVariable("id_user") String id) {
