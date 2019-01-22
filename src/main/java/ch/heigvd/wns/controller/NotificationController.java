@@ -35,9 +35,9 @@ public class NotificationController {
         return notificationRepository.findByRecipient(u.get());
     }
 
-    @RequestMapping(value = "/readed/", method = { RequestMethod.POST }, produces = "application/json")
+    @RequestMapping(value = "{id_notification}/readed/", method = { RequestMethod.POST }, produces = "application/json")
     public @ResponseBody
-    ResponseEntity readed(@RequestParam("id_notification") String id) {
+    ResponseEntity readed(@PathVariable("id_notification") String id) {
         Optional<Notification> notification = notificationRepository.findById(id);
         if (notification.isPresent()) {
             Notification n = notification.get();
