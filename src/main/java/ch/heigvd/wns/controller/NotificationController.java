@@ -7,6 +7,8 @@ import ch.heigvd.wns.repository.mongo.NotificationRepository;
 import ch.heigvd.wns.repository.mongo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,5 +34,20 @@ public class NotificationController {
         }
         return notificationRepository.findByRecipient(u.get());
     }
+
+    @RequestMapping(value = "/readed/", method = { RequestMethod.POST }, produces = "application/json")
+    public @ResponseBody
+    ResponseEntity readed(@RequestParam("id_notification") String id) {
+        Optional<Notification> notification = notificationRepository.findById(id);
+        if (notification.isPresent()) {
+            Notification n = notification.get();
+            n.setRead(true);
+            notificationRepository.save(n);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+
 
 }
