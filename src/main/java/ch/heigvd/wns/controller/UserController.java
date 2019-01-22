@@ -125,7 +125,7 @@ public class UserController {
             Followers followers = new Followers(follower, followed);
             followerRepository.save(followers);
 
-            Notification notification = new Notification(follower, followed, follower.getUsername() + " followed you !", "NEW_FOLLOWER");
+            Notification notification = new Notification(follower, followed, follower.getEmail() + " followed you !", "NEW_FOLLOWER");
             notificationRepository.save(notification);
         } catch (MongoException e) {
             e.printStackTrace();
