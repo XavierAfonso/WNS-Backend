@@ -6,6 +6,7 @@ import ch.heigvd.wns.model.mongo.Notification;
 import ch.heigvd.wns.model.mongo.User;
 import ch.heigvd.wns.repository.elasticsearch.BookRepository;
 import ch.heigvd.wns.repository.mongo.FollowerRepository;
+import ch.heigvd.wns.repository.mongo.NotificationRepository;
 import ch.heigvd.wns.repository.mongo.UserRepository;
 import ch.heigvd.wns.security.jwt.AccountCredentials;
 import ch.heigvd.wns.security.jwt.AuthenticatedUser;
@@ -37,6 +38,9 @@ public class UserController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @RequestMapping(value = "signup", method = { RequestMethod.POST }, produces = "application/json")
     public @ResponseBody
@@ -122,6 +126,7 @@ public class UserController {
             followerRepository.save(followers);
 
             Notification notification = new Notification(follower, followed, follower.getUsername() + " followed you !", "NEW_FOLLOWER");
+            notificationRepository.save(notification);
         } catch (MongoException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Already exists");
