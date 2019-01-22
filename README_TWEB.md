@@ -1,8 +1,99 @@
-## Document technique - MAC
+## Document technique - TWEB
 
 ### Introduction
 
-Cette documentation concerne la partie TWEB pour notre projet WNS. Dans le cadre du projet, nous avons choisit d'implémenté notre frontend en JavaScript avec le framework ReactJS accompagné d'un Backend Java et du framework Spring.
+Cette documentation concerne la partie TWEB pour notre projet WNS. Dans le cadre du projet, nous avons choisi d'implémenter notre FrontEnd en JavaScript avec le Framework ReactJS accompagné d'un Backend Java et du Framework Spring.
+
+Au début de ce projet, nous avions choisi de réaliser l’aspect graphique à la main en se basant sur un Template Bootstrap. Nous nous sommes vite rendu compte de la complexité de ce choix pour réaliser un réseau social.
+
+Nous avons donc pris la décision de recommencer en utilisant des composants se basant sur la norme Material-UI.
+
+### Technologies utilisées
+
+- React JS + Material-UI pour le front End 
+- React Routeur pour la gestion des urls
+- Axios pour les requêtes REST API.
+- ReacTour pour l’aspect Onboarding, aide à l’utilisateur
+- PDFObject pour afficher les PDF directement dans des balises HTML
+
+
+
+## Architecture
+
+```bash
+Cient
+│   .gitignore
+│   package-lock.json
+│   package.json
+│   README.md
+│
+├───public
+│       favicon.ico
+│       index.html
+│       manifest.json
+│
+└───src
+    │   App.js
+    │   index.css
+    │   index.js
+    │   logo.svg
+    │   pdfobject.js
+    │   serviceWorker.js
+    │
+    ├───Components
+    │       AutoComplete.js
+    │       CreatePostDialog.js
+    │       default.js
+    │       EditPostDialog.js
+    │       FollowerCard.js
+    │       FollowingCard.js
+    │       PdfViewer.js
+    │       Post.js
+    │       ProfilCard.js
+    │
+    ├───css
+    │       general.css
+    │
+    ├───Pages
+    │       Followers.js
+    │       Followings.js
+    │       Header.js
+    │       Home.js
+    │       Librairy.js
+    │       Login.js
+    │       Navigator.js
+    │       Profil.js
+    │       ProfilOther.js
+    │       Register.js
+    │
+    └───Utils
+        │   AuthProvider.js
+        │   theme.js
+        │   user.services.js
+        │
+        └───steps
+                stepsHome.js
+
+
+```
+
+#### Components
+
+Ce dossier contient tous les composants.
+
+#### Pages
+
+Ce dossier contient toutes les pages. Nous avons décidé de créer deux pages distinct concernant la page de profil de l'utilisateur courant et la page de profil des autres utilisateurs pour bien séparer la logique qui n'est pas la même entre ces deux pages.
+
+#### Utils
+
+##### AuthProvider.js  
+
+Gère tous les aspects liés à l'authentification, la sécurité de l'application. Vérifie le token et l'utilisateur courant à chaque refresh de la page. 
+
+##### user.services.js
+
+Contient les méthodes axios.
 
 ### Backend
 

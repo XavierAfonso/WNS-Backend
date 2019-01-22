@@ -4,9 +4,11 @@ import ch.heigvd.wns.dto.PostDTO;
 import ch.heigvd.wns.dto.SearchQuery;
 import ch.heigvd.wns.model.elasticsearch.Book;
 import ch.heigvd.wns.model.mongo.Followers;
+import ch.heigvd.wns.model.mongo.Notification;
 import ch.heigvd.wns.model.mongo.User;
 import ch.heigvd.wns.repository.elasticsearch.BookRepository;
 import ch.heigvd.wns.repository.mongo.FollowerRepository;
+import ch.heigvd.wns.repository.mongo.NotificationRepository;
 import ch.heigvd.wns.repository.mongo.UserRepository;
 import ch.heigvd.wns.security.jwt.AuthenticatedUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -52,6 +54,9 @@ public class BookController {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -102,6 +107,19 @@ public class BookController {
         } catch (Exception e) {
             System.out.println(e);
         }
+
+        // Create the notification for the followers
+        User sender = userRepository.findByEmail(auth.getName());
+        List<Followers> followers = followerRepository.findByTo(sender);
+        for (Followers f : followers) {
+            Notification notification = new Notification(sender,
+                    f.getTo(),
+                    sender.getUsername() + " created a new Book called " + book.getTitle(),
+                    "BOOK_CREATION");
+            notificationRepository.save(notification);
+        }
+
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

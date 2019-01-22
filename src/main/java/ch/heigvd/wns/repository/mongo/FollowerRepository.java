@@ -13,5 +13,6 @@ public interface FollowerRepository extends PagingAndSortingRepository<Followers
     List<Followers> findByTo(User u, Pageable pageable);
     Followers findByFromAndTo(User from, User to);
     List<Followers> findByFrom(User u);
+    List<Followers> findByTo(User u);
     List<Followers> findAll();
 }
