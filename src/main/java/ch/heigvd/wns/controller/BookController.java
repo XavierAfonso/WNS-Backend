@@ -100,6 +100,16 @@ public class BookController {
             Response response = restClient.performRequest(request);
             // Check if we indexed right the file
             if (response.getStatusLine().getStatusCode() == 201) {
+                // Create the notification for the followers
+                User sender = userRepository.findByEmail(auth.getName());
+                List<Followers> followers = followerRepository.findByTo(sender);
+                for (Followers f : followers) {
+                    Notification notification = new Notification(sender,
+                            f.getTo(),
+                            sender.getUsername() + " created a new Book called " + book.getTitle(),
+                            "BOOK_CREATION");
+                    notificationRepository.save(notification);
+                }
                 return new ResponseEntity(HttpStatus.CREATED);
             } else {
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,18 +117,6 @@ public class BookController {
         } catch (Exception e) {
             System.out.println(e);
         }
-
-        // Create the notification for the followers
-        User sender = userRepository.findByEmail(auth.getName());
-        List<Followers> followers = followerRepository.findByTo(sender);
-        for (Followers f : followers) {
-            Notification notification = new Notification(sender,
-                    f.getTo(),
-                    sender.getUsername() + " created a new Book called " + book.getTitle(),
-                    "BOOK_CREATION");
-            notificationRepository.save(notification);
-        }
-
 
         return new ResponseEntity(HttpStatus.CREATED);
     }

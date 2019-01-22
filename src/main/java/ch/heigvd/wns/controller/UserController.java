@@ -2,6 +2,7 @@ package ch.heigvd.wns.controller;
 
 import ch.heigvd.wns.model.elasticsearch.Book;
 import ch.heigvd.wns.model.mongo.Followers;
+import ch.heigvd.wns.model.mongo.Notification;
 import ch.heigvd.wns.model.mongo.User;
 import ch.heigvd.wns.repository.elasticsearch.BookRepository;
 import ch.heigvd.wns.repository.mongo.FollowerRepository;
@@ -119,6 +120,8 @@ public class UserController {
         try {
             Followers followers = new Followers(follower, followed);
             followerRepository.save(followers);
+
+            Notification notification = new Notification(follower, followed, follower.getUsername() + " followed you !", "NEW_FOLLOWER");
         } catch (MongoException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body("Already exists");
