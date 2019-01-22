@@ -105,7 +105,7 @@ public class BookController {
                 List<Followers> followers = followerRepository.findByTo(sender);
                 for (Followers f : followers) {
                     Notification notification = new Notification(sender,
-                            f.getTo(),
+                            f.getFrom(),
                             sender.getUsername() + " created a new Book called " + book.getTitle(),
                             "BOOK_CREATION");
                     notificationRepository.save(notification);
