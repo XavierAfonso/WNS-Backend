@@ -32,7 +32,7 @@ public class NotificationController {
         if (!u.isPresent()) {
             return null;
         }
-        return notificationRepository.findByRecipient(u.get());
+        return notificationRepository.findByRecipientAndIsRead(u.get(), false);
     }
 
     @RequestMapping(value = "{id_notification}/readed/", method = { RequestMethod.POST }, produces = "application/json")
